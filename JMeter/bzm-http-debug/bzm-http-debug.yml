@@ -1,0 +1,27 @@
+# Debug test: checks that the bzm - HTTP Sampler plugin runs on a BlazeMeter public location with Java 17.
+# Targets the public demo site blazedemo.com.
+# Upload this file and bzm-http-debug.jmx to the BlazeMeter test, and select this YAML as the main file.
+# Local "bzt -cloud" does not work with this file: local Taurus has no class for the version-switch module.
+
+services:
+- module: version-switch
+  switch-java: 17
+
+modules:
+  version-switch:
+    send-to-blazemeter: true
+  jmeter:
+    version: 5.6.3            # plugin was verified with JMeter 5.6.3
+
+execution:
+- executor: jmeter
+  scenario: bzm-http-debug
+  concurrency: 1
+  ramp-up: 10s
+  hold-for: 3m
+  locations:
+    us-east4-a: 1             # US East (Virginia, Google) - public
+
+scenarios:
+  bzm-http-debug:
+    script: bzm-http-debug.jmx

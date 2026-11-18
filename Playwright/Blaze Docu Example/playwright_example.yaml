@@ -1,0 +1,16 @@
+execution:
+- executor: playwright
+  scenario: playwright_test
+  iterations: 10
+  hold-for: 1m
+  concurrency: 1
+
+settings:
+  env:
+    BASE_URL: https://blazedemo.com/
+
+scenarios:
+    playwright_test:
+        script: example.spec.ts # points to the TypeScript file with tests
+        browser: firefox
+        test: has title # Omit the test name to run all tests. Here, "has title" is the name of the test.

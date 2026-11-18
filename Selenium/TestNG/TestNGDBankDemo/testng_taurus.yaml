@@ -1,0 +1,17 @@
+execution:
+- executor: selenium
+  runner: testng
+  testng-xml: testng.xml
+  scenario: testng
+  concurrency: 10
+  hold-for: 5m
+
+scenarios:
+  testng:
+    script: testng-simple-1.0.0-tests-with-dependencies.jar
+    
+modules:
+  testng:
+    autodetect-xml: False
+  version-switch:
+    switch-java: 11

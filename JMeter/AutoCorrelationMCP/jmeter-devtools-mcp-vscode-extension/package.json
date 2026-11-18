@@ -1,0 +1,53 @@
+{
+  "name": "jmeter-devtools-mcp-vscode-extension",
+  "displayName": "JMeter DevTools MCP VS Code Extension",
+  "description": "A VS Code extension to interface with JMeter and leverage Chrome DevTools MCP for enhanced testing capabilities.",
+  "version": "0.1.0",
+  "publisher": "your-name",
+  "engines": {
+    "vscode": "^1.60.0"
+  },
+  "activationEvents": [
+    "onCommand:jmeter.startTest",
+    "onCommand:jmeter.stopTest",
+    "onCommand:jmeter.getResults"
+  ],
+  "main": "./src/extension.ts",
+  "contributes": {
+    "commands": [
+      {
+        "command": "jmeter.startTest",
+        "title": "Start JMeter Test"
+      },
+      {
+        "command": "jmeter.stopTest",
+        "title": "Stop JMeter Test"
+      },
+      {
+        "command": "jmeter.getResults",
+        "title": "Get JMeter Test Results"
+      }
+    ],
+    "views": {
+      "explorer": [
+        {
+          "id": "jmeterView",
+          "name": "JMeter"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "watch": "tsc -watch -p tsconfig.json",
+    "prepublish": "npm run build"
+  },
+  "devDependencies": {
+    "typescript": "^4.4.0",
+    "vscode": "^1.60.0",
+    "ts-loader": "^9.2.6"
+  },
+  "dependencies": {
+    "axios": "^0.21.1"
+  }
+}

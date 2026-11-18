@@ -1,0 +1,31 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build Extension",
+            "type": "shell",
+            "command": "tsc",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$tsc"],
+            "detail": "Compiles the TypeScript files into JavaScript."
+        },
+        {
+            "label": "Run Tests",
+            "type": "shell",
+            "command": "npm test",
+            "group": "test",
+            "problemMatcher": ["$npm-test"],
+            "detail": "Runs the unit tests for the extension."
+        },
+        {
+            "label": "Package Extension",
+            "type": "shell",
+            "command": "vsce package",
+            "group": "build",
+            "detail": "Packages the extension for distribution."
+        }
+    ]
+}

@@ -1,0 +1,11 @@
+execution:
+- executor: k6
+  concurrency: 10
+  hold-for: 30s
+  secrets:
+  - secret_url
+  scenario: k6-test
+  
+scenarios:
+  k6-test:
+    script: example_k6_test.ts

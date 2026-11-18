@@ -1,0 +1,20 @@
+execution:
+- executor: testng
+  scenario: dbankdemo-testng-java
+  concurrency: 1
+  iterations: 1
+
+scenarios:
+  dbankdemo-testng-java:
+    script: Dbankdemo20260930Testng.java
+    # Taurus compiles the .java file but does not ship Selenium classes.
+    additional-classpath:
+    - selenium-libs.jar
+
+modules:
+  testng:
+    autodetect-xml: False
+    # Selenium 4 classes are Java 11 bytecode. The default target (1.7) cannot read them.
+    compile-target-java: 11
+  version-switch:
+    switch-java: 11

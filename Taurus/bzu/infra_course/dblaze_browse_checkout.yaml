@@ -1,0 +1,58 @@
+modules:
+  nose:
+    ignore-unknown-actions: true
+  selenium:
+    chromedriver:
+     version: 120.0.6099.62
+
+execution:
+- executor: selenium
+  scenario: Dblaze-Selenium
+  blazegrid: true
+  
+  capabilities: 
+    browserName: chrome
+  hold-for: 20m
+
+scenarios:
+  Dblaze-Selenium:
+    generate-flow-markers: true 
+    headless: false
+    timeout: 60s
+    think-time: 0s
+    requests:
+    - label: Test
+      actions:
+      - resizeWindow(1349,872)
+      - go(chrome://newtab/)
+      - go(https://demoblaze.com/)
+    - label: browse
+      actions:
+      - clickByLinkText(Samsung galaxy s6)
+      - clickByCSS(a.nav-link)
+      - clickByLinkText(Samsung galaxy s7)
+    - label: add to cart
+      actions:
+      - clickByLinkText(Add to cart)
+      # WARN: Command Not yet supported. ('assertAlert:"Product added.":""')
+    - label: view cart
+      actions:
+      - clickByID(cartur)
+    - label: checkout
+      actions:
+      - clickByCSS(button.btn.btn-success)
+      - clickByID(name)
+      - typeByID(name): "captain herp a derp"
+      - typeByID(country): "United States"
+      - typeByID(city): "pirate cove"
+      - clickByID(card)
+      - typeByID(card): "123412341234"
+      - clickByID(month)
+      - typeByID(month): "10"
+      - clickByID(year)
+      - typeByID(year): "2021"
+      - clickByCSS(#orderModal > div.modal-dialog > div.modal-content > div.modal-footer > button.btn.btn-primary)
+      - clickByCSS(button.confirm.btn.btn-lg.btn-primary)
+    - label: logout
+      actions:
+      - clickByID(logout2)

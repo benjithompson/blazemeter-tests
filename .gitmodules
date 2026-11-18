@@ -1,0 +1,3 @@
+[submodule "Selenium/TestNG/BlazeMeterTestNGExample"]
+	path = Selenium/TestNG/BlazeMeterTestNGExample
+	url = https://github.com/benjithompson/BlazeMeterTestNGExample.git

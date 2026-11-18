@@ -1,0 +1,306 @@
+{
+	"info": {
+		"_postman_id": "e8de75ad-11bb-462c-9eea-cb36d75e6e26",
+		"name": "Deck Of Cards API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31072181"
+	},
+	"item": [
+		{
+			"name": "Create New Deck",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"var deck_id = jsonData.deck_id;\r",
+							"pm.collectionVariables.set(\"deck_id\", deck_id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://www.deckofcardsapi.com/api/deck/new/",
+					"protocol": "https",
+					"host": [
+						"www",
+						"deckofcardsapi",
+						"com"
+					],
+					"path": [
+						"api",
+						"deck",
+						"new",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Draw Cards",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json(); \r",
+							"var cards = []\r",
+							"let length = jsonData.cards.length;\r",
+							"console.log(length);\r",
+							"\r",
+							"for(i = 0; i < length; i++){\r",
+							"    cards.push(jsonData.cards[i].code);\r",
+							"}\r",
+							"console.log(cards);\r",
+							"pm.collectionVariables.set(\"cardList\", cards);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://www.deckofcardsapi.com/api/deck/{{deck_id}}/draw/?count=52",
+					"protocol": "https",
+					"host": [
+						"www",
+						"deckofcardsapi",
+						"com"
+					],
+					"path": [
+						"api",
+						"deck",
+						"{{deck_id}}",
+						"draw",
+						""
+					],
+					"query": [
+						{
+							"key": "count",
+							"value": "52"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add cards to piles",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let cardList = pm.collectionVariables.get(\"cardList\")\r",
+							"let currCard = cardList.shift();\r",
+							"pm.collectionVariables.set(\"current_card\", currCard);\r",
+							"console.log(currCard);\r",
+							"console.log(cardList);\r",
+							"pm.collectionVariables.set(\"cardList\", cardList);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const cardList = pm.collectionVariables.get(\"cardList\");\r",
+							"if (cardList && cardList.length >0){\r",
+							"    postman.setNextRequest(\"Add cards to piles\");\r",
+							"}else{\r",
+							"    postman.setNextRequest(\"List Cards in Piles\");\r",
+							"}\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://www.deckofcardsapi.com/api/deck/{{deck_id}}/pile/{{pile_name}}/add/?cards={{current_card}}",
+					"protocol": "https",
+					"host": [
+						"www",
+						"deckofcardsapi",
+						"com"
+					],
+					"path": [
+						"api",
+						"deck",
+						"{{deck_id}}",
+						"pile",
+						"{{pile_name}}",
+						"add",
+						""
+					],
+					"query": [
+						{
+							"key": "cards",
+							"value": "{{current_card}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Cards in Piles",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json(); \r",
+							"const pileName = pm.collectionVariables.get(\"pile_name\");\r",
+							"const deck_cards_count = jsonData.remaining;\r",
+							"const pile_cards_count = jsonData.piles.default_pile.remaining;\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Full Deck is 0 remaining cards\", function () {\r",
+							"    deck_cards_count == 0;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Pile is 52 remaining cards\", function () {\r",
+							"    pile_cards_count == 52;\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://www.deckofcardsapi.com/api/deck/{{deck_id}}/pile/{{pile_name}}/list/",
+					"protocol": "https",
+					"host": [
+						"www",
+						"deckofcardsapi",
+						"com"
+					],
+					"path": [
+						"api",
+						"deck",
+						"{{deck_id}}",
+						"pile",
+						"{{pile_name}}",
+						"list",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Return Cards to Deck",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"var remaining = pm.response.json.remaining;\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Full Deck has 52 cards\", function () {\r",
+							"    remaining == 52;\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://www.deckofcardsapi.com/api/deck/{{deck_id}}/return/",
+					"protocol": "https",
+					"host": [
+						"www",
+						"deckofcardsapi",
+						"com"
+					],
+					"path": [
+						"api",
+						"deck",
+						"{{deck_id}}",
+						"return",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "deck_id",
+			"value": "375td6e491bk",
+			"type": "string"
+		},
+		{
+			"key": "pile_name",
+			"value": "default_pile",
+			"type": "string"
+		},
+		{
+			"key": "current_card",
+			"value": "AS"
+		},
+		{
+			"key": "cardCodes",
+			"value": ""
+		},
+		{
+			"key": "cardList",
+			"value": ""
+		}
+	]
+}

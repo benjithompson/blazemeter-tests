@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.1.1"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.1.1 
+          http://maven.apache.org/xsd/assembly-2.1.1.xsd">
+    <id>test-distribution</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+    
+    <fileSets>
+        <!-- Include testng.xml -->
+        <fileSet>
+            <directory>${project.basedir}</directory>
+            <includes>
+                <include>testng.xml</include>
+            </includes>
+            <outputDirectory>/</outputDirectory>
+        </fileSet>
+        
+        <!-- Include run scripts -->
+        <fileSet>
+            <directory>${project.basedir}/scripts</directory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+            <outputDirectory>scripts</outputDirectory>
+            <fileMode>0755</fileMode>
+        </fileSet>
+    </fileSets>
+    
+    <files>
+        <!-- Include the shaded JAR -->
+        <file>
+            <source>${project.build.directory}/${project.artifactId}-${project.version}-with-dependencies.jar</source>
+            <outputDirectory>/</outputDirectory>
+            <destName>testng-simple-with-dependencies.jar</destName>
+        </file>
+    </files>
+</assembly>

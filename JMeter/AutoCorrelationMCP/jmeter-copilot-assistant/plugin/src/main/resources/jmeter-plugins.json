@@ -1,0 +1,17 @@
+{
+  "name": "jmeter-copilot-assistant",
+  "version": "1.0.0",
+  "description": "A JMeter plugin that integrates with GitHub Copilot for AI assistance.",
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "jmeter": "latest"
+  },
+  "jmeter": {
+    "guiClass": "com.example.jmeter.copilot.gui.CopilotAssistantGui",
+    "description": "A plugin that provides AI assistance for JMeter testing.",
+    "version": "1.0.0",
+    "category": "Testing",
+    "icon": "icon.png"
+  }
+}

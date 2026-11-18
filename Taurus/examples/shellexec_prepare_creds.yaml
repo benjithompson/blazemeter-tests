@@ -1,0 +1,22 @@
+# Sample Scenario with dependenciews downloaded and removed at execution startup and end.
+# Grabbing addresses csv arbitrarily from the web: https://people.sc.fsu.edu/~jburkardt/data/csv/addresses.csv
+
+
+services:
+  - module: shellexec
+    prepare:
+      - command: echo "Starting the test..."
+      - command: curl https://people.sc.fsu.edu/~jburkardt/data/csv/addresses.csv
+    post-process:
+      - command: echo "Test completed."
+      - command: rm addressess.csv
+
+execution:
+  - concurrency: 1
+    hold-for: 1m
+    scenario: example_scenario
+
+scenarios:
+  example_scenario:
+    requests:
+      - url: www.google.com

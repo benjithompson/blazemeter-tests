@@ -1,0 +1,92 @@
+# Digital Bank web vitals: run the Playwright journey locally as a smoke check,
+# then run it on BlazeMeter and build the web vitals HTML dashboard.
+#
+# Required repository secrets:
+#   BLAZEMETER_API_KEY_ID      BlazeMeter API key id
+#   BLAZEMETER_API_KEY_SECRET  BlazeMeter API key secret
+# Optional repository variable:
+#   BZM_TEST_ID                BlazeMeter test id (default 16072257)
+name: dbankdemo web vitals
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'Playwright/dbankdemo-webvitals/**'
+      - '.github/workflows/dbankdemo-webvitals.yml'
+
+concurrency:
+  group: dbankdemo-webvitals
+  cancel-in-progress: false
+
+defaults:
+  run:
+    working-directory: Playwright/dbankdemo-webvitals
+
+jobs:
+  local-smoke:
+    name: Playwright smoke (local)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: Playwright/dbankdemo-webvitals/package-lock.json
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npx playwright test --reporter=list
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-test-results
+          path: Playwright/dbankdemo-webvitals/test-results/
+          retention-days: 7
+
+  blazemeter:
+    name: BlazeMeter run + web vitals report
+    needs: local-smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      BLAZEMETER_API_KEY_ID: ${{ secrets.BLAZEMETER_API_KEY_ID }}
+      BLAZEMETER_API_KEY_SECRET: ${{ secrets.BLAZEMETER_API_KEY_SECRET }}
+      BZM_TEST_ID: ${{ vars.BZM_TEST_ID || '16072257' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: Playwright/dbankdemo-webvitals/package-lock.json
+      - run: npm ci
+
+      - name: Upload files, run on BlazeMeter, wait for the end
+        id: run
+        run: node run-on-blazemeter.mjs
+
+      - name: Build web vitals dashboard
+        # Build the report also when the run failed: slow pages often cause the failure.
+        if: always() && steps.run.outputs.master_id != ''
+        run: npx bzm-vitals-dashboard --master ${{ steps.run.outputs.master_id }} --out web-vitals-report.html
+
+      - name: Upload web vitals dashboard
+        if: always() && steps.run.outputs.master_id != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-vitals-report-${{ steps.run.outputs.master_id }}
+          path: Playwright/dbankdemo-webvitals/web-vitals-report.html
+          retention-days: 30
+
+      - name: Job summary
+        if: always() && steps.run.outputs.master_id != ''
+        run: |
+          {
+            echo "### dbankdemo web vitals"
+            echo ""
+            echo "- BlazeMeter report: https://a.blazemeter.com/app/#/masters/${{ steps.run.outputs.master_id }}"
+            echo "- Web vitals dashboard: artifact \`web-vitals-report-${{ steps.run.outputs.master_id }}\`"
+          } >> "$GITHUB_STEP_SUMMARY"

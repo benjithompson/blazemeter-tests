@@ -1,0 +1,11 @@
+# Subtle accumulation: users finish (3 requests each) but throttle (4 rps) sits
+# below demand (6 rps), so lifetimes stretch and VUs climb to ~120 at flat 4 rps.
+# Final minute (injection stopped, backlog draining) shows VUs falling again.
+execution:
+  - executor: gatling
+    scenario: throttle-below-demand
+
+scenarios:
+  throttle-below-demand:
+    script: ThrottleBelowDemand.scala
+    simulation: ThrottleBelowDemand

@@ -1,0 +1,18 @@
+execution:
+- executor: jmeter
+  iterations: 1
+  scenario: demoblaze
+
+scenarios:
+  demoblaze:
+    script: demoblaze.jmx
+
+modules:
+  cloud:
+    account: 291446
+    workspace: 2194183
+    project: 2508796
+    test: Demoblaze JMeter
+    report-name: Demoblaze JMeter
+
+provisioning: cloud

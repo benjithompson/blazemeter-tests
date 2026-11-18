@@ -1,0 +1,10 @@
+# RPS-target test: 10 arrivals/sec, one request per user. VUs self-scale with
+# response time (Little's law); expect flat ~3-5 VUs and flat 10 rps.
+execution:
+  - executor: gatling
+    scenario: rps-target-open
+
+scenarios:
+  rps-target-open:
+    script: RpsTargetOpen.scala
+    simulation: RpsTargetOpen

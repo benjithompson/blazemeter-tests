@@ -1,0 +1,83 @@
+#!/bin/bash
+#
+# JMeter Copilot Assistant CLI
+# Run correlation analysis and apply changes from the command line.
+#
+# Usage:
+#   jmeter-copilot -jmx <file.jmx> [options]
+#   jmeter-copilot <file.jmx> [options]
+#
+# Options:
+#   -jmx <file>           Path to JMX file (required)
+#   -output, -o <file>    Output JMX file (default: overwrites input)
+#   -auto-accept          Auto-accept recommended candidates (default)
+#   -no-auto-accept       Interactive mode - prompt for each candidate
+#   -runs, -n <n>         Number of test runs for analysis (default: 1)
+#   -model, -m <name>     AI model to use (default: claude-sonnet-4.5)
+#   -dry-run              Show changes without modifying files
+#   -verbose, -v          Show detailed output
+#   -help, -h             Show help message
+#
+
+# Find JMeter home
+if [ -z "$JMETER_HOME" ]; then
+    # Try common locations
+    POSSIBLE_PATHS=(
+        "/opt/homebrew/opt/jmeter/libexec"
+        "/usr/local/opt/jmeter/libexec"
+        "/opt/jmeter"
+        "/usr/share/jmeter"
+        "$HOME/apache-jmeter"
+    )
+    
+    for path in "${POSSIBLE_PATHS[@]}"; do
+        if [ -d "$path" ] && [ -f "$path/bin/jmeter.properties" ]; then
+            JMETER_HOME="$path"
+            break
+        fi
+    done
+fi
+
+if [ -z "$JMETER_HOME" ]; then
+    echo "❌ Error: Could not find JMeter installation."
+    echo "   Set JMETER_HOME environment variable or install JMeter."
+    echo ""
+    echo "   macOS (Homebrew): brew install jmeter"
+    echo "   Linux: apt install jmeter"
+    echo ""
+    exit 1
+fi
+
+# Find the plugin JAR
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PLUGIN_JAR=""
+
+# Check multiple locations for the plugin JAR
+POSSIBLE_JARS=(
+    "$JMETER_HOME/lib/ext/jmeter-copilot-assistant-0.1.0.jar"
+    "$SCRIPT_DIR/../target/jmeter-copilot-assistant-0.1.0.jar"
+    "$SCRIPT_DIR/jmeter-copilot-assistant-0.1.0.jar"
+)
+
+for jar in "${POSSIBLE_JARS[@]}"; do
+    if [ -f "$jar" ]; then
+        PLUGIN_JAR="$jar"
+        break
+    fi
+done
+
+if [ -z "$PLUGIN_JAR" ]; then
+    echo "❌ Error: Could not find jmeter-copilot-assistant JAR file."
+    echo "   Build the plugin first: cd plugin && mvn package"
+    exit 1
+fi
+
+# Build classpath with JMeter dependencies
+CLASSPATH="$PLUGIN_JAR"
+CLASSPATH="$CLASSPATH:$JMETER_HOME/lib/ext/*"
+CLASSPATH="$CLASSPATH:$JMETER_HOME/lib/*"
+
+# Run the CLI
+java -cp "$CLASSPATH" \
+    -Djmeter.home="$JMETER_HOME" \
+    com.example.jmeter.copilot.cli.CopilotCLI "$@"

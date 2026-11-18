@@ -1,0 +1,13 @@
+execution:
+- executor: locust
+  concurrency: 5
+  hold-for: 2m
+  scenario: demoblaze-browse-cart
+
+scenarios:
+  demoblaze-browse-cart:
+    script: demoblaze_locust.py
+    default-address: https://api.demoblaze.com
+
+reporting:
+- module: passfail

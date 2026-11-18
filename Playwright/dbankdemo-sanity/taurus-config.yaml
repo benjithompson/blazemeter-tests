@@ -1,0 +1,15 @@
+execution:
+- executor: playwright
+  scenario: login-logout-test
+  concurrency: 4      # 4 concurrent users
+  hold-for: 4m        # run for 4 minutes
+  ramp-up: 1m         # ramp up to 4 users over 1 minute
+
+scenarios:
+  login-logout-test:
+    script: login-logout.spec.js
+    browser: chrome
+
+reporting:
+- module: final-stats
+- module: console

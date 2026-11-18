@@ -1,0 +1,19 @@
+execution:
+- executor: junit
+  scenario: dbankdemo-junit-java
+  concurrency: 1
+  iterations: 1
+
+scenarios:
+  dbankdemo-junit-java:
+    script: Dbankdemo20260930Junit.java
+    # Taurus compiles the .java file but does not ship Selenium classes.
+    additional-classpath:
+    - selenium-libs.jar
+
+modules:
+  junit:
+    # Selenium 4 classes are Java 11 bytecode. The default target (1.7) cannot read them.
+    compile-target-java: 11
+  version-switch:
+    switch-java: 11

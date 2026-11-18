@@ -1,0 +1,8 @@
+execution:
+- executor: selenium
+  runner: junit
+  scenario: demoblaze-recorder
+
+scenarios:
+  demoblaze-recorder:
+    script: demoblaze-selenium-Selenium-java-wd-junit.java

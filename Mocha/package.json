@@ -1,0 +1,21 @@
+{
+  "name": "perfecto-appium-demo",
+  "version": "1.0.0",
+  "description": "Appium WebDriverIO demo for Perfecto Cloud",
+  "main": "demobank.js",
+  "scripts": {
+    "test": "mocha demobank.js",
+    "test:all": "mocha **/*.js",
+    "test:watch": "mocha **/*.js --watch"
+  },
+  "dependencies": {
+    "@wdio/mocha-framework": "^8.24.0",
+    "assert": "^2.0.0",
+    "dotenv": "^17.0.1",
+    "mocha": "^10.2.0",
+    "webdriverio": "^8.24.0"
+  },
+  "devDependencies": {
+    "@wdio/cli": "^8.24.0"
+  }
+}

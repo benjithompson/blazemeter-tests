@@ -1,0 +1,17 @@
+execution:
+- executor: selenium
+  runner: testng
+  testng-xml: testng.xml
+  scenario: dbankdemo-testng
+  concurrency: 1
+  iterations: 1
+
+scenarios:
+  dbankdemo-testng:
+    script: dbankdemo-testng-1.0.0-tests-with-dependencies.jar
+
+modules:
+  testng:
+    autodetect-xml: False
+  version-switch:
+    switch-java: 11

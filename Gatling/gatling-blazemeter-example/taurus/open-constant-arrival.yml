@@ -1,0 +1,9 @@
+# Hypothesis test B: open model, ~360 total ephemeral users, true concurrency ~5, flat throughput.
+execution:
+  - executor: gatling
+    scenario: open-constant-arrival
+
+scenarios:
+  open-constant-arrival:
+    script: OpenConstantArrival.scala
+    simulation: OpenConstantArrival

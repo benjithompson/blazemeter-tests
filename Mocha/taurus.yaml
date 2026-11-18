@@ -1,0 +1,74 @@
+execution:
+- executor: mocha
+  files:
+  - .env
+  - package.json
+  - package-lock.json
+  iterations: 3
+  locations:
+    us-central1-a: 1
+  scenario: BlazedemoSmoke
+modules:
+  cloud:
+    default-location: us-central1-a
+  consolidator:
+    buffer-multiplier: 2
+    buffer-scale-choice: 0.5
+    generalize-labels: 500
+    histogram-initial: 5s
+    max-buffer-len: 2h
+    max-error-variety: 100
+    min-buffer-len: 2s
+    percentiles:
+    - 0.0
+    - 50.0
+    - 90.0
+    - 95.0
+    - 99.0
+    - 99.9
+    - 100.0
+reporting:
+- module: final-stats
+- module: console
+scenarios:
+  BlazedemoSmoke:
+    script: demobank.js
+services:
+- local:
+  - metrics:
+    - cpu
+    - mem
+    - bytes-sent
+    - bytes-recv
+    - disk-read
+    - disk-write
+    - disk-space
+    - engine-loop
+    - conn-all
+  - &id001
+    metrics:
+    - cpu
+    - mem
+    - bytes-sent
+    - bytes-recv
+    - disk-read
+    - disk-write
+    - disk-space
+    - engine-loop
+    - conn-all
+  module: monitoring
+- local:
+  - *id001
+  module: monitoring
+- module: shellexec
+  prepare:
+  - command: npm install perfecto-reporting
+  - command: npm install xhr2
+  - command: npm install appium
+  - command: npm install chai
+  - command: npm install selenium-webdriver
+  - command: npm install chromedriver
+settings:
+  default-executor: jmeter
+  env:
+    OBJC_DISABLE_INITIALIZE_FORK_SAFETY: 'YES'

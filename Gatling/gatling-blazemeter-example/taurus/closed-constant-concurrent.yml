@@ -1,0 +1,9 @@
+# Hypothesis test A: flat 5 true concurrency, but user IDs churn (hundreds of short-lived users).
+execution:
+  - executor: gatling
+    scenario: closed-constant-concurrent
+
+scenarios:
+  closed-constant-concurrent:
+    script: ClosedConstantConcurrent.scala
+    simulation: ClosedConstantConcurrent

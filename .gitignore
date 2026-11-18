@@ -1,0 +1,107 @@
+# macOS
+.DS_Store
+
+# Local environments and caches
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+coverage/
+
+# Java / Maven / Gradle / sbt
+target/
+build/
+.gradle/
+project/target/
+project/project/
+*.class
+*.jar
+temp_jar/
+
+# Taurus and BlazeMeter run output
+bzt.log
+artifacts/
+artifacts (*)/
+**/20??-??-??_*/
+*.out
+*.jtl
+*.jtl.gz
+jmeter.log
+*.log
+
+# JMeter
+*.jmx.bak
+backups/
+
+# Gatling
+results/
+
+# Playwright
+playwright-report/
+test-results/
+blob-report/
+.playwright/
+.playwright-mcp/
+
+# Local reports and temporary files
+*.html.tmp
+*.tmp
+*.swp
+
+# k6
+*.k6-summary.json
+
+# Secrets - local only, never commit
+auth.json
+api-key*.json
+!api-key.example.json
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+.bzt-rc
+.npmrc
+.claude/settings.local.json
+
+# Browser recordings hold live cookies and tokens - convert them, do not commit
+*.har
+*.jmx.backup
+
+# Local tool state
+.pag/
+
+# Upload bundles - rebuild these from source, do not commit
+*.zip
+
+# Editor
+.idea/
+*.iml
+.vscode/settings.json
+.metadata/
+.settings/
+.project
+.classpath
+
+# Web vitals dashboard output and cache (bzm-vitals-dashboard)
+.artifact-cache/
+web-vitals-report*.html
+
+# Private material - local only. Put customer scripts, recordings and data in
+# a folder named private/ (or _private/) anywhere in the tree. More local-only
+# paths are listed in .git/info/exclude, which is not pushed.
+private/
+_private/

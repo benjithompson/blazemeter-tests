@@ -1,0 +1,10 @@
+# Reproduction test: users injected continuously and never finish (forever loop),
+# throttle keeps request rate flat at 10 rps. Expect VUs to climb linearly to ~180.
+execution:
+  - executor: gatling
+    scenario: open-forever-throttled
+
+scenarios:
+  open-forever-throttled:
+    script: OpenForeverThrottled.scala
+    simulation: OpenForeverThrottled

@@ -1,0 +1,14 @@
+{
+  "name": "dbankdemo-webvitals",
+  "private": true,
+  "scripts": {
+    "test": "playwright test",
+    "report": "bzm-vitals-dashboard"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.61.1",
+    "@types/node": "^22.15.3",
+    "bzm-playwright-vitals": "^0.2.1",
+    "bzm-vitals-dashboard": "^0.4.0"
+  }
+}

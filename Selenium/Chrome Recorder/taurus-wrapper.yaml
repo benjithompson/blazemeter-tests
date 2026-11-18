@@ -1,0 +1,7 @@
+execution:
+- executor: selenium
+  scenario: demoblaze-recorder
+
+scenarios:
+  demoblaze-recorder:
+    script: DemoblazetestTest.java

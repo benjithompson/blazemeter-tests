@@ -1,0 +1,13 @@
+# Burst injection behind a ramping throttle.
+# constantUsersPerSec(15) for 10s (a variable named "productConcurrentUsers" —
+# rate read as count) behind reachRps(20) in 10s. The cap exceeds demand, but the
+# cap's RAMP sits below demand for the first 7.5s, so arrivals queue: VU spike to
+# ~56 then drain, throughput flat <=20 rps.
+execution:
+  - executor: gatling
+    scenario: burst-throttle-ramp
+
+scenarios:
+  burst-throttle-ramp:
+    script: BurstThrottleRamp.scala
+    simulation: BurstThrottleRamp

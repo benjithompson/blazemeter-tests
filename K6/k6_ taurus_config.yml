@@ -1,0 +1,15 @@
+execution:
+  - executor: k6
+    scenario: k6_example
+
+scenarios:
+  k6_example:
+    script: k6_many_urls_http.url_example.js
+
+modules:
+  consolidator:
+    generalize-labels: 1000  # deafult is 500, increase to 1000
+    buffer-multiplier: 2  # to handling more samples
+    min-buffer-len: 5s
+    ignore-labels: 
+      - ignore

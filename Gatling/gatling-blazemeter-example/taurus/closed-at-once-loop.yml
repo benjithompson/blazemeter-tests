@@ -1,0 +1,9 @@
+# Control test: 5 long-lived users, flat true concurrency, 5 distinct user IDs.
+execution:
+  - executor: gatling
+    scenario: closed-at-once-loop
+
+scenarios:
+  closed-at-once-loop:
+    script: ClosedAtOnceLoop.scala
+    simulation: ClosedAtOnceLoop

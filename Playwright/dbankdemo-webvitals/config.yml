@@ -1,0 +1,23 @@
+# Taurus config - the main script of the BlazeMeter test.
+# Upload it with dbank-login.spec.ts, credentials.ts, playwright.config.ts and
+# package.json, and select it as the main script.
+#
+# Small load on purpose: this is a web vitals smoke run on a public demo site.
+
+modules:
+  blazemeter:
+    # Must be false on accounts without dedicated IPs.
+    dedicated-ips: false
+
+execution:
+- executor: playwright
+  scenario: dbank-vitals
+  concurrency: 2
+  iterations: 3
+  locations:
+    us-east4-a: 1
+
+scenarios:
+  dbank-vitals:
+    script: dbank-login.spec.ts
+    browser: chromium
