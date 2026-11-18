@@ -9,13 +9,12 @@
     "test:watch": "mocha **/*.js --watch"
   },
   "dependencies": {
-    "@wdio/mocha-framework": "^8.24.0",
-    "assert": "^2.0.0",
     "dotenv": "^17.0.1",
-    "mocha": "^10.2.0",
-    "webdriverio": "^8.24.0"
+    "mocha": "^12.0.3",
+    "webdriverio": "^10.1.0"
   },
-  "devDependencies": {
-    "@wdio/cli": "^8.24.0"
+  "overrides": {
+    "glob": "^14.0.3",
+    "minimatch": "^11.0.4"
   }
 }
